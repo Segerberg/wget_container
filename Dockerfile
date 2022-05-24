@@ -1,10 +1,21 @@
-FROM python:3.9-alpine
+ARG PYTHON=python:3.7.2
 
-RUN apk update
+FROM $PYTHON
 
-RUN apk add --no-cache --update \
-  python3 \
-  python3-dev \
-  screen\
-  bash\
-  wget
+RUN apt-get update && apt-get install -y \
+    screen
+
+RUN mkdir /webarchive
+
+VOLUME /webarchive
+
+WORKDIR /webarchive
+
+EXPOSE 8080
+
+
+RUN useradd -ms /bin/bash -u 1000 archivist
+
+USER archivist
+
+
